@@ -49,6 +49,10 @@ export default function Capture({ onExtracted }: Props) {
       return;
     }
 
+    await runExtraction(base64);
+  }
+
+  async function runExtraction(base64: string) {
     setPreview(base64);
     setStep(0);
     setBusy(true);
@@ -76,6 +80,22 @@ export default function Capture({ onExtracted }: Props) {
     } catch {
       setError("সংযোগে সমস্যা। ইন্টারনেট দেখে আবার চেষ্টা করুন।");
       setBusy(false);
+    }
+  }
+
+  async function useDemo() {
+    setError("");
+    try {
+      const blob = await fetch("/demo-khata.jpg").then((r) => r.blob());
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = () => reject(new Error("read failed"));
+        reader.readAsDataURL(blob);
+      });
+      await runExtraction(base64);
+    } catch {
+      setError("নমুনা ছবিটি আনা গেল না। আবার চেষ্টা করুন।");
     }
   }
 
@@ -181,6 +201,18 @@ export default function Capture({ onExtracted }: Props) {
             onChange={handleFile}
             className="hidden"
           />
+
+          <button
+            type="button"
+            onClick={useDemo}
+            className="mt-3 min-h-[56px] w-full rounded-2xl border border-line bg-surface px-6 text-[16px] font-medium text-ink transition-colors active:bg-paper"
+          >
+            নমুনা খাতা দিয়ে দেখুন
+          </button>
+
+          <p className="mt-2.5 text-center text-[12.5px] leading-relaxed text-muted">
+            ক্যামেরা ছাড়াই পরখ করতে চাইলে একটি আসল খাতার ছবি দেওয়া আছে
+          </p>
         </div>
       </div>
     </div>

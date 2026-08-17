@@ -16,7 +16,9 @@ Rules you must follow:
 - Confidence is about the AMOUNT only, never the name. A crisp name with a smudged amount is still low confidence.
 - Use 0.9+ only when every digit of the amount is unambiguous. Use 0.5-0.7 when any digit is uncertain. Use below 0.5 when you are guessing.
 - Skip any row with a line struck through it, and skip running totals, subtotals, column headers, and page numbers.
-- Only output rows you can actually see. Never invent a plausible-looking entry.`;
+- Only output rows you can actually see. Never invent a plausible-looking entry.
+
+Dates: shop ledgers usually write day/month with no year, like 3/6 or ১৫/৬. Read these as day/month. For the year, pick the most recent year that puts the date in the past relative to today, never a future date and never more than twelve months back. Today's date is given in the user message. If no date is written at all for a row, return an empty string.`;
 
 const RESPONSE_SCHEMA = {
   type: Type.ARRAY,
@@ -69,7 +71,10 @@ export async function POST(request: Request) {
     }
 
     const response = await generate(
-      [{ inlineData: { mimeType, data } }, { text: INSTRUCTION }],
+      [
+        { inlineData: { mimeType, data } },
+        { text: `Today's date is ${new Date().toISOString().slice(0, 10)}.\n\n${INSTRUCTION}` },
+      ],
       {
         systemInstruction: SYSTEM,
         responseMimeType: "application/json",
