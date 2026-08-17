@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Capture from "@/components/Capture";
 import Dashboard from "@/components/Dashboard";
+import Navbar from "@/components/Navbar";
 import Review from "@/components/Review";
 import { STORAGE_KEY, normalize } from "@/lib/ledger";
 import type { ExtractedEntry, LedgerEntry } from "@/lib/types";
@@ -40,6 +41,11 @@ export default function Home() {
     }
   }, [ledger, loaded]);
 
+  const total = useMemo(
+    () => ledger.reduce((sum, e) => sum + e.amount, 0),
+    [ledger],
+  );
+
   const handleExtracted = useCallback((entries: ExtractedEntry[]) => {
     setDraft(entries.map(normalize));
     setView("review");
@@ -51,31 +57,49 @@ export default function Home() {
     setView("dashboard");
   }, [draft]);
 
+  const navigate = useCallback(
+    (next: View) => {
+      if (next === "dashboard" && !ledger.length) return;
+      setView(next);
+    },
+    [ledger.length],
+  );
+
   if (!loaded) return <div className="min-h-dvh" />;
 
-  if (view === "review") {
-    return (
-      <Review
-        rows={draft}
-        onChange={setDraft}
-        onCommit={commit}
-        onCancel={() => {
-          setDraft([]);
-          setView(ledger.length ? "dashboard" : "capture");
-        }}
-      />
-    );
-  }
-
-  if (view === "dashboard") {
-    return <Dashboard entries={ledger} onCapture={() => setView("capture")} />;
-  }
-
   return (
-    <Capture
-      onExtracted={handleExtracted}
-      onOpenLedger={() => setView("dashboard")}
-      hasLedger={ledger.length > 0}
-    />
+    <>
+      <Navbar
+        view={view}
+        onNavigate={navigate}
+        hasLedger={ledger.length > 0}
+        total={total}
+        pendingCount={draft.length}
+      />
+
+      {view === "review" && (
+        <Review
+          rows={draft}
+          onChange={setDraft}
+          onCommit={commit}
+          onCancel={() => {
+            setDraft([]);
+            setView(ledger.length ? "dashboard" : "capture");
+          }}
+        />
+      )}
+
+      {view === "dashboard" && (
+        <Dashboard entries={ledger} onCapture={() => setView("capture")} />
+      )}
+
+      {view === "capture" && (
+        <Capture
+          onExtracted={handleExtracted}
+          onOpenLedger={() => setView("dashboard")}
+          hasLedger={ledger.length > 0}
+        />
+      )}
+    </>
   );
 }

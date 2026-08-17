@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { CONFIDENCE_THRESHOLD, formatTaka } from "@/lib/ledger";
+import { CONFIDENCE_THRESHOLD, formatTakaBn, toBn } from "@/lib/ledger";
 import type { LedgerEntry } from "@/lib/types";
 
 const NAME_PLACEHOLDERS = ["Karim Mia", "Rahima Begum", "Jashim Uddin"];
@@ -54,7 +54,7 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
 
   return (
     <div className="min-h-dvh pb-32">
-      <div className="mx-auto w-full max-w-[430px] px-5 pt-12">
+      <div className="mx-auto w-full max-w-[430px] px-5 pt-6">
         <header>
           <button
             type="button"
@@ -76,7 +76,7 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
                   <WarnIcon />
                 </span>
                 <span>
-                  {uncertain} টি সারির টাকার অঙ্ক নিয়ে সন্দেহ আছে — মিলিয়ে নিন
+                  {toBn(uncertain)}টি সারির টাকার অঙ্ক নিয়ে সন্দেহ আছে — মিলিয়ে নিন
                   <span className="mt-0.5 block text-[13px] font-normal">
                     {uncertain} row{uncertain > 1 ? "s" : ""} need your check
                   </span>
@@ -114,10 +114,10 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
                     )}
                     {low ? (
                       <span className="text-warn">
-                        অনিশ্চিত · {Math.round(row.confidence * 100)}%
+                        অনিশ্চিত · {toBn(Math.round(row.confidence * 100))}%
                       </span>
                     ) : (
-                      <span>সারি {index + 1}</span>
+                      <span>সারি {toBn(index + 1)}</span>
                     )}
                   </span>
                   <button
@@ -207,9 +207,9 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
         <div className="mx-auto w-full max-w-[430px] px-5 pb-6 pt-4">
           <div className="mb-3 flex items-baseline justify-between">
             <span className="text-[15px] text-muted">
-              {rows.length} টি সারি <span className="text-[13px]">/ rows</span>
+              {toBn(rows.length)}টি সারি <span className="text-[13px]">/ rows</span>
             </span>
-            <span className="num text-[26px] font-bold">৳{formatTaka(total)}</span>
+            <span className="num text-[26px] font-bold">৳{formatTakaBn(total)}</span>
           </div>
           <button
             type="button"

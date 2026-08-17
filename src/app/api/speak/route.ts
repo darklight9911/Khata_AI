@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const VOICE_ID = "21m00Tcm4TlvDq8ikWAM";
+const VOICE_ID = "EXAVITQu4vr4xnSDxMaL";
 
 const PRIMARY_MODEL = "eleven_v3";
 const FALLBACK_MODEL = "eleven_multilingual_v2";

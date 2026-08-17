@@ -42,8 +42,18 @@ export function bucketOf(days: number): AgingBucket {
   return "60+";
 }
 
+const BN_DIGITS = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+
+export function toBn(value: string | number): string {
+  return String(value).replace(/\d/g, (d) => BN_DIGITS[Number(d)]);
+}
+
 export function formatTaka(amount: number): string {
   return Math.round(amount).toLocaleString("en-IN");
+}
+
+export function formatTakaBn(amount: number): string {
+  return toBn(formatTaka(amount));
 }
 
 export function formatDate(date: string): string {

@@ -1,5 +1,5 @@
-import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
+import { GeminiError, generate, textOf } from "@/lib/gemini";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -11,18 +11,11 @@ const SYSTEM = `তুমি একজন বাংলাদেশি ছোট 
 - বিনয়ী, আন্তরিক ও ঘরোয়া ভাষা — যেন পাশের বাড়ির মানুষকে বলছো।
 - কখনো কড়া, দাবিদার বা অফিসিয়াল ভাষা নয়। কোনো হুমকি বা চাপ নয়।
 - সালাম বা সম্বোধন দিয়ে শুরু করতে পারো।
+- ক্রেতার নাম যেভাবে দেওয়া আছে সেভাবেই লিখবে।
 - শুধু বার্তাটি লিখবে, কোনো ব্যাখ্যা বা উদ্ধৃতিচিহ্ন নয়।`;
 
 export async function POST(request: Request) {
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "GEMINI_API_KEY is not configured on the server." },
-        { status: 500 },
-      );
-    }
-
     const body = await request.json().catch(() => null);
     const name = typeof body?.name === "string" ? body.name.trim() : "";
     const amount = Number(body?.amount) || 0;
@@ -35,29 +28,30 @@ export async function POST(request: Request) {
       );
     }
 
-    const ai = new GoogleGenAI({ apiKey });
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: [
+    const response = await generate(
+      [
         {
-          role: "user",
-          parts: [
-            {
-              text: `${SYSTEM}\n\nক্রেতার নাম: ${name}\nবাকি টাকা: ${amount} টাকা\nকত দিন ধরে বাকি: ${daysOverdue} দিন`,
-            },
-          ],
+          text: `ক্রেতার নাম: ${name}\nবাকি টাকা: ${amount} টাকা\nকত দিন ধরে বাকি: ${daysOverdue} দিন`,
         },
       ],
-      config: { temperature: 0.8 },
-    });
+      {
+        systemInstruction: SYSTEM,
+        temperature: 0.9,
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+      "remind",
+    );
 
-    const text = response.text?.trim();
+    const text = textOf(response);
     if (!text) {
       return NextResponse.json({ error: "Gemini returned an empty message." }, { status: 502 });
     }
 
     return NextResponse.json({ text });
   } catch (error) {
+    if (error instanceof GeminiError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
     const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json({ error: `Reminder failed: ${message}` }, { status: 500 });
   }

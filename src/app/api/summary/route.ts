@@ -1,27 +1,20 @@
-import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
+import { GeminiError, generate, textOf } from "@/lib/gemini";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const SYSTEM = `তুমি একজন বাংলাদেশি দোকানদারের সহকারী। নিচের বাকির হিসাব দেখে ২-৩ বাক্যে স্বাভাবিক কথ্য বাংলায় একটি সারাংশ বলো, যেন কেউ মুখে বলছে।
+const SYSTEM = `তুমি একজন বাংলাদেশি দোকানদারের সহকারী। নিচের বাকির হিসাব দেখে ২ থেকে ৩ বাক্যে স্বাভাবিক কথ্য বাংলায় একটি সারাংশ বলো, যেন কেউ মুখে বলছে।
 
 নিয়ম:
 - মোট কত টাকা বাকি, কতজনের কাছে বাকি, এবং কার বাকি সবচেয়ে পুরনো — এই তিনটি বিষয় বলবে।
 - শুধু সাধারণ বাক্য। কোনো মার্কডাউন নয়, কোনো বুলেট পয়েন্ট নয়, কোনো শিরোনাম নয়।
 - অঙ্ক দিয়ে কোনো সংখ্যা লিখবে না। সব সংখ্যা কথায় লিখবে, যেমন "বারো হাজার পাঁচশো টাকা", "সাতজন", "বিয়াল্লিশ দিন"।
+- নামগুলো যেভাবে দেওয়া আছে সেভাবেই বলবে।
 - উত্তরে শুধু বাক্যগুলো থাকবে, আর কিছু নয়।`;
 
 export async function POST(request: Request) {
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "GEMINI_API_KEY is not configured on the server." },
-        { status: 500 },
-      );
-    }
-
     const body = await request.json().catch(() => null);
     const raw = Array.isArray(body?.entries) ? body.entries : body;
     if (!Array.isArray(raw) || raw.length === 0) {
@@ -50,29 +43,30 @@ export async function POST(request: Request) {
       ),
     ).size;
 
-    const ai = new GoogleGenAI({ apiKey });
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: [
+    const response = await generate(
+      [
         {
-          role: "user",
-          parts: [
-            {
-              text: `${SYSTEM}\n\nমোট বাকি: ${total} টাকা\nমোট খাতক: ${debtors} জন\n\nএন্ট্রি:\n${lines.join("\n")}`,
-            },
-          ],
+          text: `মোট বাকি: ${total} টাকা\nমোট বাকিদার: ${debtors} জন\n\nএন্ট্রি:\n${lines.join("\n")}`,
         },
       ],
-      config: { temperature: 0.6 },
-    });
+      {
+        systemInstruction: SYSTEM,
+        temperature: 0.6,
+        thinkingConfig: { thinkingBudget: 0 },
+      },
+      "summary",
+    );
 
-    const text = response.text?.trim();
+    const text = textOf(response);
     if (!text) {
       return NextResponse.json({ error: "Gemini returned an empty summary." }, { status: 502 });
     }
 
     return NextResponse.json({ text });
   } catch (error) {
+    if (error instanceof GeminiError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
     const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json({ error: `Summary failed: ${message}` }, { status: 500 });
   }

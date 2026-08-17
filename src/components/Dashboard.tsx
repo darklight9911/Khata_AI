@@ -5,8 +5,9 @@ import {
   agingSummary,
   bucketOf,
   daysSince,
-  formatTaka,
+  formatTakaBn,
   groupByDebtor,
+  toBn,
 } from "@/lib/ledger";
 import type { AgingBucket, Debtor, LedgerEntry } from "@/lib/types";
 import DebtorPanel from "./DebtorPanel";
@@ -62,7 +63,7 @@ export default function Dashboard({ entries, onCapture }: Props) {
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        setError(data?.error || "শব্দ তৈরি করা গেল না।");
+        setError(data?.error || "কণ্ঠ তৈরি করা গেল না।");
         setState("idle");
         return;
       }
@@ -112,7 +113,7 @@ export default function Dashboard({ entries, onCapture }: Props) {
 
   return (
     <div className="min-h-dvh pb-28">
-      <div className="mx-auto w-full max-w-[430px] px-5 pt-12">
+      <div className="mx-auto w-full max-w-[430px] px-5 pt-7">
         <div className="flex items-start justify-between">
           <h1 className="text-[15px] font-medium text-muted">
             মোট বাকি
@@ -121,12 +122,12 @@ export default function Dashboard({ entries, onCapture }: Props) {
             </span>
           </h1>
           <span className="rounded-full border border-line bg-surface px-3 py-1.5 text-[13px] text-muted">
-            {allDebtors.length} জন খাতক
+            {toBn(allDebtors.length)} জন বাকিদার
           </span>
         </div>
 
         <p className="num mt-2 text-[64px] font-bold leading-[1.05] tracking-tight">
-          ৳{formatTaka(total)}
+          ৳{formatTakaBn(total)}
         </p>
 
         <button
@@ -180,10 +181,10 @@ export default function Dashboard({ entries, onCapture }: Props) {
                   {b.bn}
                 </span>
                 <span className="num mt-1 block text-[19px] font-bold leading-tight">
-                  ৳{formatTaka(stat.amount)}
+                  ৳{formatTakaBn(stat.amount)}
                 </span>
                 <span className="block text-[12px] text-muted">
-                  {stat.count} টি
+                  {toBn(stat.count)}টি
                 </span>
               </button>
             );
@@ -227,11 +228,11 @@ export default function Dashboard({ entries, onCapture }: Props) {
                         : "bg-paper text-muted"
                     }`}
                   >
-                    {d.daysOverdue} দিন
+                    {toBn(d.daysOverdue)} দিন
                   </span>
                 </span>
                 <span className="num shrink-0 text-[24px] font-bold">
-                  ৳{formatTaka(d.total)}
+                  ৳{formatTakaBn(d.total)}
                 </span>
               </button>
             </li>

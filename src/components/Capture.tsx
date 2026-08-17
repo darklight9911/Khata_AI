@@ -83,7 +83,7 @@ export default function Capture({ onExtracted, onOpenLedger, hasLedger }: Props)
 
   if (busy) {
     return (
-      <div className="flex min-h-dvh flex-col px-5 pb-10 pt-14">
+      <div className="flex min-h-[calc(100dvh-64px)] flex-col px-5 pb-10 pt-8">
         <div className="mx-auto w-full max-w-[430px]">
           {preview && (
             <div className="mb-8 overflow-hidden rounded-2xl border border-line bg-surface">
@@ -141,19 +141,21 @@ export default function Capture({ onExtracted, onOpenLedger, hasLedger }: Props)
   }
 
   return (
-    <div className="flex min-h-dvh flex-col px-5 pb-10 pt-16">
+    <div className="flex min-h-[calc(100dvh-64px)] flex-col px-5 pb-10 pt-8">
       <div className="mx-auto flex w-full max-w-[430px] flex-1 flex-col">
         <header className="rise">
-          <h1 className="text-[34px] font-bold leading-tight">খাতা AI</h1>
+          <h1 className="text-[30px] font-bold leading-tight">
+            বাকির খাতার ছবি তুলুন
+          </h1>
           <p className="mt-1 text-[15px] text-muted">
-            বাকির খাতার ছবি তুলুন, হিসাব পেয়ে যান
+            হিসাব নিজে থেকেই তৈরি হয়ে যাবে
           </p>
           <p className="text-[13px] text-muted/80">
             Photograph your credit ledger, get your receivables
           </p>
         </header>
 
-        <div className="mt-14 flex flex-1 flex-col justify-center">
+        <div className="mt-10 flex flex-1 flex-col justify-center">
           <div className="mb-10 rounded-2xl border border-dashed border-line bg-surface px-6 py-10 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-2xl">
               📓

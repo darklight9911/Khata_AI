@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { formatDate, formatTaka } from "@/lib/ledger";
+import { formatDate, formatTakaBn, toBn } from "@/lib/ledger";
 import type { Debtor } from "@/lib/types";
 
 type Props = {
@@ -72,7 +72,7 @@ export default function DebtorPanel({ debtor, onClose, onPlay, audioState }: Pro
             <div className="min-w-0">
               <h2 className="truncate text-[24px] font-bold">{debtor.name}</h2>
               <p className="mt-0.5 text-[14px] text-muted">
-                {debtor.daysOverdue} দিন ধরে বাকি
+                {toBn(debtor.daysOverdue)} দিন ধরে বাকি
                 <span className="ml-1.5 text-[12.5px] opacity-80">
                   {debtor.daysOverdue} days overdue
                 </span>
@@ -89,7 +89,7 @@ export default function DebtorPanel({ debtor, onClose, onPlay, audioState }: Pro
           </div>
 
           <p className="num mt-4 text-[44px] font-bold leading-none">
-            ৳{formatTaka(debtor.total)}
+            ৳{formatTakaBn(debtor.total)}
           </p>
 
           <ul className="mt-6 divide-y divide-line overflow-hidden rounded-xl border border-line bg-surface">
@@ -104,7 +104,7 @@ export default function DebtorPanel({ debtor, onClose, onPlay, audioState }: Pro
                   </span>
                 </span>
                 <span className="num shrink-0 text-[19px] font-semibold">
-                  ৳{formatTaka(entry.amount)}
+                  ৳{formatTakaBn(entry.amount)}
                 </span>
               </li>
             ))}
