@@ -10,8 +10,8 @@ const hind = Hind_Siliguri({
 });
 
 export const metadata: Metadata = {
-  title: "খাতা AI — Khata AI",
-  description: "বাকির খাতার ছবি তুলুন, হিসাব পেয়ে যান। Photograph your credit ledger, get your receivables.",
+  title: "খাতা AI",
+  description: "বাকির খাতার ছবি তুলুন, হিসাব পেয়ে যান।",
 };
 
 export const viewport: Viewport = {

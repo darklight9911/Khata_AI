@@ -12,10 +12,10 @@ import {
 import type { AgingBucket, Debtor, LedgerEntry } from "@/lib/types";
 import DebtorPanel from "./DebtorPanel";
 
-const BUCKETS: { key: AgingBucket; bn: string; en: string }[] = [
-  { key: "0-30", bn: "০–৩০ দিন", en: "0-30 days" },
-  { key: "31-60", bn: "৩১–৬০ দিন", en: "31-60 days" },
-  { key: "60+", bn: "৬০+ দিন", en: "60+ days" },
+const BUCKETS: { key: AgingBucket; bn: string }[] = [
+  { key: "0-30", bn: "০–৩০ দিন" },
+  { key: "31-60", bn: "৩১–৬০ দিন" },
+  { key: "60+", bn: "৬০+ দিন" },
 ];
 
 type AudioState = "idle" | "loading" | "playing";
@@ -117,9 +117,6 @@ export default function Dashboard({ entries, onCapture }: Props) {
         <div className="flex items-start justify-between">
           <h1 className="text-[15px] font-medium text-muted">
             মোট বাকি
-            <span className="mt-0.5 block text-[12.5px] opacity-80">
-              Total outstanding
-            </span>
           </h1>
           <span className="rounded-full border border-line bg-surface px-3 py-1.5 text-[13px] text-muted">
             {toBn(allDebtors.length)} জন বাকিদার
@@ -139,13 +136,6 @@ export default function Dashboard({ entries, onCapture }: Props) {
           {summaryState === "loading" && "হিসাব তৈরি হচ্ছে…"}
           {summaryState === "playing" && "▮▮ শোনানো হচ্ছে"}
           {summaryState === "idle" && "🔊 খাতা শুনুন"}
-          <span className="mt-0.5 block text-[12.5px] font-normal text-white/75">
-            {summaryState === "loading"
-              ? "Preparing…"
-              : summaryState === "playing"
-                ? "Playing…"
-                : "Listen to my khata"}
-          </span>
         </button>
 
         {summaryText && summaryState === "idle" && (
@@ -194,9 +184,6 @@ export default function Dashboard({ entries, onCapture }: Props) {
         <div className="mt-8 flex items-baseline justify-between">
           <h2 className="text-[17px] font-semibold">
             যারা বাকি রেখেছে
-            <span className="ml-2 text-[12.5px] font-normal text-muted">
-              Debtors
-            </span>
           </h2>
           {filter && (
             <button
@@ -242,7 +229,6 @@ export default function Dashboard({ entries, onCapture }: Props) {
         {debtors.length === 0 && (
           <p className="mt-8 text-center text-[15px] text-muted">
             এই সময়ের কোনো বাকি নেই
-            <span className="mt-1 block text-[13px]">Nothing in this range</span>
           </p>
         )}
       </div>
@@ -255,9 +241,6 @@ export default function Dashboard({ entries, onCapture }: Props) {
             className="min-h-[56px] w-full rounded-2xl border border-line bg-surface text-[17px] font-semibold text-ink active:scale-[0.98]"
           >
             + নতুন পাতা যোগ করুন
-            <span className="ml-2 text-[12.5px] font-normal text-muted">
-              Add another page
-            </span>
           </button>
         </div>
       </div>

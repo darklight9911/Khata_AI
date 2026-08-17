@@ -73,9 +73,6 @@ export default function DebtorPanel({ debtor, onClose, onPlay, audioState }: Pro
               <h2 className="truncate text-[24px] font-bold">{debtor.name}</h2>
               <p className="mt-0.5 text-[14px] text-muted">
                 {toBn(debtor.daysOverdue)} দিন ধরে বাকি
-                <span className="ml-1.5 text-[12.5px] opacity-80">
-                  {debtor.daysOverdue} days overdue
-                </span>
               </p>
             </div>
             <button
@@ -119,9 +116,6 @@ export default function DebtorPanel({ debtor, onClose, onPlay, audioState }: Pro
                 className="min-h-[56px] w-full rounded-2xl border-2 border-accent bg-surface px-5 text-[17px] font-semibold text-accent transition-transform active:scale-[0.98] disabled:opacity-50"
               >
                 {generating ? "লেখা হচ্ছে…" : "তাগাদার বার্তা লিখুন"}
-                <span className="mt-0.5 block text-[12.5px] font-normal text-muted">
-                  {generating ? "Writing…" : "Generate reminder"}
-                </span>
               </button>
             )}
 
@@ -134,7 +128,7 @@ export default function DebtorPanel({ debtor, onClose, onPlay, audioState }: Pro
             {message && (
               <div>
                 <label className="mb-2 block text-[14px] font-medium">
-                  বার্তা <span className="text-[12.5px] font-normal text-muted">/ Message</span>
+                  বার্তা
                 </label>
                 <textarea
                   value={message}
@@ -167,9 +161,6 @@ export default function DebtorPanel({ debtor, onClose, onPlay, audioState }: Pro
 
                 <p className="mt-3 text-center text-[12.5px] text-muted">
                   কপি করে নিজে পাঠান — অ্যাপ নিজে থেকে কিছু পাঠায় না
-                  <span className="mt-0.5 block opacity-80">
-                    Nothing is sent automatically — you send it yourself
-                  </span>
                 </p>
               </div>
             )}

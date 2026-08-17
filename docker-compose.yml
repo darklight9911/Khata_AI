@@ -1,0 +1,11 @@
+services:
+  khata:
+    build: .
+    image: khata-ai
+    container_name: khata-ai
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY:?set GEMINI_API_KEY in .env}
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:?set ELEVENLABS_API_KEY in .env}

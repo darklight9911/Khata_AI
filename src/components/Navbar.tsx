@@ -38,7 +38,6 @@ export default function Navbar({
           </span>
           <span className="leading-none">
             <span className="block text-[17px] font-bold">খাতা AI</span>
-            <span className="mt-0.5 block text-[11px] text-muted">Khata AI</span>
           </span>
         </button>
 
@@ -84,7 +83,7 @@ export default function Navbar({
         <div className="border-t border-line/60 bg-surface/50">
           <div className="mx-auto flex w-full max-w-[430px] items-center justify-between px-5 py-1.5">
             <span className="text-[12px] text-muted">
-              সংরক্ষিত খাতা <span className="opacity-75">/ Saved ledger</span>
+              সংরক্ষিত খাতা
             </span>
             <span className="num text-[13px] font-semibold">
               ৳{formatTakaBn(total)}

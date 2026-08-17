@@ -61,13 +61,10 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
             onClick={onCancel}
             className="-ml-2 mb-4 min-h-[44px] px-2 text-[15px] text-muted"
           >
-            ← বাতিল <span className="text-[13px]">/ Cancel</span>
+            ← বাতিল
           </button>
 
           <h1 className="text-[28px] font-bold leading-tight">যাচাই করুন</h1>
-          <p className="mt-1 text-[15px] text-muted">
-            Check what the AI read before saving
-          </p>
 
           <div className="mt-5 rounded-xl border-l-4 border-warn-line bg-warn-soft px-4 py-3">
             {uncertain > 0 ? (
@@ -77,17 +74,11 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
                 </span>
                 <span>
                   {toBn(uncertain)}টি সারির টাকার অঙ্ক নিয়ে সন্দেহ আছে — মিলিয়ে নিন
-                  <span className="mt-0.5 block text-[13px] font-normal">
-                    {uncertain} row{uncertain > 1 ? "s" : ""} need your check
-                  </span>
                 </span>
               </p>
             ) : (
               <p className="text-[15px] font-medium text-warn">
                 সব অঙ্ক পরিষ্কারভাবে পড়া গেছে
-                <span className="mt-0.5 block text-[13px] font-normal">
-                  All amounts read clearly — still worth a glance
-                </span>
               </p>
             )}
           </div>
@@ -132,7 +123,7 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
 
                 <label className="block">
                   <span className="mb-1 block text-[13px] text-muted">
-                    নাম <span className="opacity-70">/ Name</span>
+                    নাম
                   </span>
                   <input
                     value={row.name}
@@ -144,7 +135,7 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
 
                 <label className="mt-3 block">
                   <span className="mb-1 block text-[13px] text-muted">
-                    টাকা <span className="opacity-70">/ Amount</span>
+                    টাকা
                   </span>
                   <div className="relative">
                     <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[22px] font-semibold text-muted">
@@ -168,7 +159,7 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
                 <div className="mt-3 grid grid-cols-2 gap-3">
                   <label className="block">
                     <span className="mb-1 block text-[13px] text-muted">
-                      পণ্য <span className="opacity-70">/ Item</span>
+                      পণ্য
                     </span>
                     <input
                       value={row.item}
@@ -180,7 +171,7 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
 
                   <label className="block">
                     <span className="mb-1 block text-[13px] text-muted">
-                      তারিখ <span className="opacity-70">/ Date</span>
+                      তারিখ
                     </span>
                     <input
                       type="date"
@@ -198,7 +189,6 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
         {rows.length === 0 && (
           <p className="mt-10 text-center text-[15px] text-muted">
             সব সারি মুছে ফেলা হয়েছে
-            <span className="mt-1 block text-[13px]">No rows left</span>
           </p>
         )}
       </div>
@@ -207,7 +197,7 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
         <div className="mx-auto w-full max-w-[430px] px-5 pb-6 pt-4">
           <div className="mb-3 flex items-baseline justify-between">
             <span className="text-[15px] text-muted">
-              {toBn(rows.length)}টি সারি <span className="text-[13px]">/ rows</span>
+              {toBn(rows.length)}টি সারি
             </span>
             <span className="num text-[26px] font-bold">৳{formatTakaBn(total)}</span>
           </div>
@@ -218,9 +208,6 @@ export default function Review({ rows, onChange, onCommit, onCancel }: Props) {
             className="min-h-[60px] w-full rounded-2xl bg-accent px-6 text-[19px] font-semibold text-white transition-transform active:scale-[0.98] disabled:opacity-40"
           >
             খাতায় যোগ করুন
-            <span className="mt-0.5 block text-[13px] font-normal text-white/75">
-              Add to ledger
-            </span>
           </button>
         </div>
       </div>

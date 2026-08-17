@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import type { ExtractedEntry } from "@/lib/types";
 
 const STEPS = [
-  { bn: "ছবি পাঠানো হচ্ছে", en: "Uploading photo" },
-  { bn: "হাতের লেখা পড়া হচ্ছে", en: "Reading handwriting" },
-  { bn: "নাম ও টাকা আলাদা করা হচ্ছে", en: "Separating names and amounts" },
-  { bn: "হিসাব সাজানো হচ্ছে", en: "Organising entries" },
+  "ছবি পাঠানো হচ্ছে",
+  "হাতের লেখা পড়া হচ্ছে",
+  "নাম ও টাকা আলাদা করা হচ্ছে",
+  "হিসাব সাজানো হচ্ছে",
 ];
 
 type Props = {
@@ -95,15 +95,14 @@ export default function Capture({ onExtracted }: Props) {
           )}
 
           <h1 className="text-2xl font-semibold">খাতা পড়া হচ্ছে</h1>
-          <p className="mt-1 text-[15px] text-muted">Reading your khata</p>
 
           <ol className="mt-10 space-y-1">
-            {STEPS.map((s, i) => {
+            {STEPS.map((label, i) => {
               const done = i < step;
               const active = i === step;
               return (
                 <li
-                  key={s.en}
+                  key={label}
                   className={`flex items-start gap-3 rounded-xl px-3 py-3 transition-colors ${
                     active ? "bg-accent-soft" : ""
                   }`}
@@ -125,9 +124,8 @@ export default function Capture({ onExtracted }: Props) {
                         active || done ? "font-medium text-ink" : "text-muted"
                       }`}
                     >
-                      {s.bn}
+                      {label}
                     </span>
-                    <span className="block text-[13px] text-muted">{s.en}</span>
                   </span>
                 </li>
               );
@@ -148,9 +146,6 @@ export default function Capture({ onExtracted }: Props) {
           <p className="mt-1 text-[15px] text-muted">
             হিসাব নিজে থেকেই তৈরি হয়ে যাবে
           </p>
-          <p className="text-[13px] text-muted/80">
-            Photograph your credit ledger, get your receivables
-          </p>
         </header>
 
         <div className="mt-10 flex flex-1 flex-col justify-center">
@@ -161,9 +156,6 @@ export default function Capture({ onExtracted }: Props) {
             <p className="text-[17px] font-medium">খাতার পাতা খুলে ছবি তুলুন</p>
             <p className="mt-1 text-[14px] text-muted">
               পুরো পাতা ফ্রেমে রাখুন, আলো যেন যথেষ্ট থাকে
-            </p>
-            <p className="mt-1 text-[12.5px] text-muted/80">
-              Fit the whole page in frame, in good light
             </p>
           </div>
 
@@ -179,9 +171,6 @@ export default function Capture({ onExtracted }: Props) {
             className="min-h-[64px] w-full rounded-2xl bg-accent px-6 text-[19px] font-semibold text-white transition-transform active:scale-[0.98]"
           >
             খাতার ছবি তুলুন
-            <span className="mt-0.5 block text-[13px] font-normal text-white/75">
-              Photograph the khata
-            </span>
           </button>
 
           <input
