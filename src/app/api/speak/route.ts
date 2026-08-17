@@ -21,7 +21,8 @@ async function synthesize(text: string, apiKey: string, modelId: string) {
 
 export async function POST(request: Request) {
   try {
-    const apiKey = process.env.ELEVENLABS_API_KEY;
+    const apiKey =
+      process.env.ELEVENLABS_API_KEY || process.env.ELEVEN_LABS_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
         { error: "ELEVENLABS_API_KEY is not configured on the server." },

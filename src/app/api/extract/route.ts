@@ -36,7 +36,7 @@ export async function POST(request: Request) {
       return fail("No image received. Send { image: base64String }.", 400);
     }
 
-    const match = image.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.*)$/s);
+    const match = image.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,([\s\S]*)$/);
     const mimeType = match?.[1] ?? "image/jpeg";
     const data = (match?.[2] ?? image).replace(/\s/g, "");
 
