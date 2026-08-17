@@ -80,7 +80,7 @@ export default function Navbar({
         )}
       </div>
 
-      {hasLedger && view === "dashboard" && (
+      {hasLedger && view === "capture" && (
         <div className="border-t border-line/60 bg-surface/50">
           <div className="mx-auto flex w-full max-w-[430px] items-center justify-between px-5 py-1.5">
             <span className="text-[12px] text-muted">

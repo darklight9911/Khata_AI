@@ -12,11 +12,9 @@ const STEPS = [
 
 type Props = {
   onExtracted: (entries: ExtractedEntry[], preview: string) => void;
-  onOpenLedger: () => void;
-  hasLedger: boolean;
 };
 
-export default function Capture({ onExtracted, onOpenLedger, hasLedger }: Props) {
+export default function Capture({ onExtracted }: Props) {
   const [busy, setBusy] = useState(false);
   const [step, setStep] = useState(0);
   const [error, setError] = useState("");
@@ -194,19 +192,6 @@ export default function Capture({ onExtracted, onOpenLedger, hasLedger }: Props)
             onChange={handleFile}
             className="hidden"
           />
-
-          {hasLedger && (
-            <button
-              type="button"
-              onClick={onOpenLedger}
-              className="mt-3 min-h-[52px] w-full rounded-2xl border border-line bg-surface px-6 text-[16px] font-medium text-ink transition-colors active:bg-paper"
-            >
-              আগের খাতা দেখুন
-              <span className="ml-2 text-[13px] font-normal text-muted">
-                Open saved ledger
-              </span>
-            </button>
-          )}
         </div>
       </div>
     </div>

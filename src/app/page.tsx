@@ -94,11 +94,7 @@ export default function Home() {
       )}
 
       {view === "capture" && (
-        <Capture
-          onExtracted={handleExtracted}
-          onOpenLedger={() => setView("dashboard")}
-          hasLedger={ledger.length > 0}
-        />
+        <Capture onExtracted={handleExtracted} />
       )}
     </>
   );
