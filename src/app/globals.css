@@ -1,26 +1,87 @@
 @import "tailwindcss";
 
+@theme {
+  --color-paper: #faf6ee;
+  --color-surface: #fffdf8;
+  --color-line: #e6ddcc;
+  --color-ink: #1c1917;
+  --color-muted: #77706a;
+  --color-accent: #0b6e4f;
+  --color-accent-soft: #e6f1ec;
+  --color-warn: #b45309;
+  --color-warn-soft: #fdf3e2;
+  --color-warn-line: #e0a котор;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-paper);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+input,
+textarea {
+  font-size: 16px;
+}
+
+input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+@keyframes khata-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: khata-rise 0.28s ease-out both;
+}
+
+@keyframes khata-sheet {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.sheet {
+  animation: khata-sheet 0.26s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@keyframes khata-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.pulse {
+  animation: khata-pulse 1.4s ease-in-out infinite;
 }
